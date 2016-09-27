@@ -3,6 +3,7 @@ import org.junit.Test;
 
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assume.assumeThat;
 
 /**
  * Created by onotole on 9/26/16.
@@ -26,8 +27,14 @@ public class SequenceTest {
     }
 
     @Test
+    public void findSubstringCheckSequenceExtender() throws BadInputException {
+        assumeThat("первый поиск", sequence.findSubstringIndex("10"), equalTo("10"));
+        assertThat("второй поиск", sequence.findSubstringIndex("11"), equalTo("12"));
+    }
+
+    @Test
     public void generateSequence() throws Exception {
-        assertThat("генерится правильная последовательность", sequence.generateSequence(15), equalTo("123456789101112131415"));
+        assertThat("генерится правильная последовательность", sequence.extendSequence(15), equalTo("123456789101112131415"));
     }
 
     @Test
@@ -37,7 +44,9 @@ public class SequenceTest {
 
     @Test
     public void checkRecreationSequence() throws BadInputException {
-        // второй запуск должен быть значительно быстрее, т.к. последовательность уже сгенерированна
+        // second and the follows launch must be more faster than first one, because Sequence generated already. (Except case with extending Sequence)
+        // this test doesn't work with enabled logging
+        if (Sequence.log.isTraceEnabled()) return;
         String bigNumber = "54329";
         long startTime = System.nanoTime();
         sequence.findSubstringIndex(bigNumber);

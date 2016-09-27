@@ -13,7 +13,7 @@ public class Sequence {
         int sequenceSize = Integer.valueOf(pattern);
         if (currentSeqSize < sequenceSize) {
             log.debug("Need to regenerate sequence! New size: " + sequenceSize);
-            seq = generateSequence(sequenceSize);
+            seq = extendSequence(sequenceSize);
             currentSeqSize = sequenceSize;
         }
         // +1 because numberings starts from 1 by the condition of the problem
@@ -22,13 +22,15 @@ public class Sequence {
         return result;
     }
 
-    String generateSequence(int size) {
+    String extendSequence(int newSize) {
         log.debug("start generating new Sequence");
-        StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 1; i < size + 1; i++) {
-            stringBuilder.append("" + i);
+        StringBuilder stringBuilder = new StringBuilder(seq);
+        for (int i = currentSeqSize + 1; i < newSize + 1; i++) {
+            stringBuilder.append(String.valueOf(i));
         }
-        return stringBuilder.toString();
+        String resultSequence = stringBuilder.toString();
+        log.debug("new Sequence: " + resultSequence);
+        return resultSequence;
     }
 
     int lookingForSubstring(String sequence, String pattern) {
