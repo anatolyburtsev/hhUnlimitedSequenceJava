@@ -6,7 +6,6 @@ import org.apache.log4j.Logger;
 public class Sequence {
     public static final Logger log = Logger.getLogger(Sequence.class);
     private String seq = "";
-    private int currentSeqSize = 0;
     private int maxNumberInSequence = 0;
     private static final int START_SEQUENCE_LENGTH = 100;
 
