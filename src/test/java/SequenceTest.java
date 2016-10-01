@@ -1,3 +1,4 @@
+import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -9,6 +10,8 @@ import static org.junit.Assume.assumeThat;
  * Created by onotole on 9/26/16.
  */
 public class SequenceTest {
+    public static final Logger log = Logger.getLogger(SequenceTest.class);
+
     private Sequence sequence;
 
     @Before
@@ -27,14 +30,14 @@ public class SequenceTest {
     }
 
     @Test
-    public void findSubstringCheckSequenceExtender() throws BadInputException {
-        assumeThat("первый поиск", sequence.findSubstringIndex("10"), equalTo("10"));
-        assertThat("второй поиск", sequence.findSubstringIndex("11"), equalTo("12"));
+    public void findReallyBigSubstring() throws Exception {
+        assertThat("действительно большая последовательность", sequence.findSubstringIndex("3456789101112131415161718192021222324252627282930"), equalTo("3"));
     }
 
     @Test
-    public void generateSequence() throws Exception {
-        assertThat("генерится правильная последовательность", sequence.extendSequence(15), equalTo("123456789101112131415"));
+    public void findSubstringCheckSequenceExtender() throws BadInputException {
+        assumeThat("первый поиск", sequence.findSubstringIndex("10"), equalTo("10"));
+        assertThat("второй поиск", sequence.findSubstringIndex("11"), equalTo("12"));
     }
 
     @Test
@@ -44,8 +47,7 @@ public class SequenceTest {
 
     @Test
     public void checkRecreationSequence() throws BadInputException {
-        // second and the follows launch must be more faster than first one, because Sequence generated already. (Except case with extending Sequence)
-        // this test doesn't work with enabled logging
+        // second and the follows launch must be faster than first one, because Sequence generated already. (Except case with extending Sequence)
         if (Sequence.log.isTraceEnabled()) return;
         String bigNumber = "54329";
         long startTime = System.nanoTime();
@@ -55,6 +57,8 @@ public class SequenceTest {
         startTime = System.nanoTime();
         sequence.findSubstringIndex(bigNumber);
         long secondLaunchTime = System.nanoTime() - startTime;
+        log.debug("first launch: " + firstLaunchTime + "ns, second launch: " + secondLaunchTime + "ns");
+
         assertThat("время работы уменьшилось", firstLaunchTime > 10 * secondLaunchTime, equalTo(true));
     }
 
